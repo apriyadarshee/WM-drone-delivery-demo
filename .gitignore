@@ -1,0 +1,4 @@
+target/
+.settings/
+spring-shell.log
+.vscode/

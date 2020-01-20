@@ -16,12 +16,10 @@ import com.walmartlabs.dronedelivery.wmdrone.exception.BadInputFileException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * This class deals with the input file for parsing and validity checks
  */
-@Component
 public class FileReadWriteUtil {
 
   Logger logger = LoggerFactory.getLogger(FileReadWriteUtil.class);
@@ -47,7 +45,7 @@ public class FileReadWriteUtil {
     if (inputLines.size() == 0) {
       throw new BadInputFileException("Input file does not have data");
     }
-
+    
     return inputLines;
   }
 

@@ -7,6 +7,8 @@ import com.walmartlabs.dronedelivery.wmdrone.util.DeliveryComparator;
 import com.walmartlabs.dronedelivery.wmdrone.util.FileReadWriteUtil;
 import com.walmartlabs.dronedelivery.wmdrone.util.InputFileParser;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,20 +26,23 @@ import java.util.List;
 @Service
 public class DeliveryLaunchCalcualtion {
 
+    // applicaiton.properties value should override
     @Value("${delivery.time.start}")
-    private String delStartStr;
+    private String delStartStr = "06:00:00";
 
     @Value("${delivery.time.stop}")
-    private String delStopStr;
+    private String delStopStr = "22:00:00";
 
     @Value("${delivery.interval.promoter.max}")
-    private Integer timePromoterMax;
+    private Integer timePromoterMax = 1;
 
     @Value("${delivery.interval.neutral.max}")
-    private Integer timeNeutralMax;
+    private Integer timeNeutralMax = 3;
 
     @Autowired
     private InputFileParser parserService;
+
+    Logger logger = LoggerFactory.getLogger(DeliveryLaunchCalcualtion.class);
 
     /**
      * This is entry method of the class where it gets the input file path, read off
@@ -56,9 +61,10 @@ public class DeliveryLaunchCalcualtion {
             outputFilePath = parserService.getOutputFileName(filePath);
             final List<OrderData> inputList = parserService
                     .convertToOrderDataList(FileReadWriteUtil.readFromInputFile(filePath));
-
+            logger.debug(outputFilePath);
             // first tag all orders to its possible categories.
             final LocalTime firstLaunchTime = tagInput(inputList);
+            logger.debug(firstLaunchTime.toString());
             // resequence the order delivery priority for NPS maximization
             resequenceOrders(inputList, firstLaunchTime);
             // calculate lauch time
@@ -111,7 +117,9 @@ public class DeliveryLaunchCalcualtion {
     }
 
     /**
-     * solve on the order delivery sequence for the NPS maximization
+     * solve on the order delivery sequence for the NPS maximization. This part with
+     * BPM will be handled with java delegate, which in turn can be pluggable to
+     * external services if compute intensive ordering is required.
      * 
      * @param orderList
      * @param firstLaunchTime

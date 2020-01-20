@@ -38,7 +38,7 @@ public class InputFileParser {
 
       outputFilePath = new StringBuilder(inputFile.getParent()).append("/output.for.").append(inputFile.getName())
           .toString();
-      System.out.print(outputFilePath);
+      logger.debug(outputFilePath);
     } else {
       throw new BadInputFileException("Input file does not exists");
     }

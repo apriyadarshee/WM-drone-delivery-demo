@@ -145,4 +145,4 @@ TODO: Here in this repo-branch, I shall introduce an embedded lightweight BPM li
 	![methods flow](resources/../src/main/resources/wmDroneProc.png)
 	Where design of the steps' flow makes it simpler to code with clarity; it solves for two other problem - 
 a) it allows one to zoom in to a bug/issue since it is confined between known states and all variables pertaining to any state change are auditable. 
-b) any computation intensive step (say if the delivery sequence needed big heuristic calculation) can be refactored and externalized possibly to a server-less implementation. 
+b) any computation intensive step (say if the delivery sequence needed big heuristic calculation) can be refactored, pluggable and externalized possibly to a server-less implementation. 
